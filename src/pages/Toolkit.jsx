@@ -253,13 +253,13 @@ function AccessibilityBadges({ palette }) {
 export default function Toolkit() {
   const { palette } = useStore();
   return (
-    <div style={{ maxWidth: 800, margin: '0 auto', padding: '2rem 0' }}>
-      <h2>Toolkit</h2>
-      <ColorHarmonyGenerator />
+    <div style={{ width: '100%' }}>
+      <h2 style={{ fontSize: 32, fontWeight: 900, marginBottom: 36, letterSpacing: 1, color: '#8b5cf6', textAlign: 'center' }}>Palette Toolkit</h2>
       <ContrastChecker palette={palette} />
       <LightenDarkenTool palette={palette} />
       <ShadeViewer palette={palette} />
-      <AccessibilityBadges palette={palette} />
+      <ColorHarmonyGenerator />
+      {/* Add more toolkit features here */}
     </div>
   );
 } 

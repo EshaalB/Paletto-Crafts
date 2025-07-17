@@ -50,16 +50,7 @@ export default function Home() {
     boxShadow: '0 2px 8px rgba(0,0,0,0.10)',
     transition: 'background 0.4s cubic-bezier(.4,0,.2,1), color 0.4s cubic-bezier(.4,0,.2,1)',
   };
-  const containerStyle = {
-    width: '100%',
-    minHeight: '100vh',
-    background: mainBg,
-    color: palette.text,
-    fontFamily: font,
-    transition: 'background 0.5s cubic-bezier(.4,0,.2,1), color 0.5s cubic-bezier(.4,0,.2,1)',
-    position: 'relative',
-    overflowX: 'hidden',
-  };
+  // Removed containerStyle
 
   // Sticky/floating palette preview bar
   const stickyBarStyle = {
@@ -90,7 +81,7 @@ export default function Home() {
   ];
 
   return (
-    <div style={containerStyle}>
+    <div style={{ width: '100%', background: mainBg, color: palette.text, fontFamily: font, transition: 'background 0.5s cubic-bezier(.4,0,.2,1), color 0.5s cubic-bezier(.4,0,.2,1)', position: 'relative', overflowX: 'hidden' }}>
       {/* Hero Section */}
       <section style={{ ...sectionStyle, background: 'transparent', minHeight: '80vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', position: 'relative' }}>
         <h1 style={{ fontSize: 64, margin: 0, fontWeight: 900, letterSpacing: 1, textShadow: '0 4px 32px rgba(0,0,0,0.18)' }}>Visualize Your Colors & Fonts</h1>
@@ -164,7 +155,7 @@ export default function Home() {
       </section>
       {/* Footer */}
       <footer style={{ marginTop: 60, padding: '2.5rem 0', background: 'rgba(24,24,37,0.95)', color: '#c4b5fd', textAlign: 'center', fontWeight: 600, fontSize: 18, borderTopLeftRadius: 32, borderTopRightRadius: 32, boxShadow: '0 -2px 24px rgba(0,0,0,0.10)' }}>
-        Paletto Crafts &copy; {new Date().getFullYear()} &mdash; Crafted with <span style={{ color: palette.accent }}>♥</span> for devs & designers.
+        Paletto Crafts &copy; {new Date().getFullYear()} &mdash; Crafted with <span style={{ color: palette.accent }}> 65</span> for devs & designers.
       </footer>
       {/* Responsive CSS */}
       <style>{`

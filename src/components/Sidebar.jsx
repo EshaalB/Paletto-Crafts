@@ -22,17 +22,18 @@ export default function Sidebar() {
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'flex-start',
-      padding: '2rem 1rem',
+      padding: '2.5rem 1.2rem 2rem 1.2rem',
       position: 'fixed',
       left: 0,
       top: 0,
       bottom: 0,
       zIndex: 200,
-      boxShadow: '2px 0 12px rgba(0,0,0,0.08)',
-      gap: 8,
+      boxShadow: '2px 0 16px rgba(0,0,0,0.10)',
+      borderRight: '2px solid #232336',
+      gap: 10,
     }}>
-      <div style={{ fontWeight: 800, fontSize: 26, marginBottom: 36, letterSpacing: 1, alignSelf: 'center' }}>Paletto Crafts</div>
-      <nav style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 12 }}>
+      <div style={{ fontWeight: 900, fontSize: 28, marginBottom: 44, letterSpacing: 1, alignSelf: 'center', color: '#c4b5fd' }}>Paletto Crafts</div>
+      <nav style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 16 }}>
         {navLinks.map(link => {
           const isActive = location.pathname === link.to;
           return (
@@ -42,21 +43,22 @@ export default function Sidebar() {
               style={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: 14,
-                color: isActive ? '#8b5cf6' : '#fff',
-                background: isActive ? '#232336' : 'transparent',
+                gap: 16,
+                color: isActive ? '#fff' : '#c4b5fd',
+                background: isActive ? 'linear-gradient(90deg, #8b5cf6 60%, #6366f1 100%)' : 'transparent',
                 textDecoration: 'none',
-                fontWeight: 600,
-                fontSize: 18,
-                padding: '12px 18px',
-                borderRadius: 10,
+                fontWeight: 700,
+                fontSize: 19,
+                padding: '14px 22px',
+                borderRadius: 12,
                 margin: '2px 0',
-                transition: 'background 0.18s, color 0.18s',
-                boxShadow: isActive ? '0 2px 8px rgba(139,92,246,0.10)' : 'none',
+                transition: 'background 0.18s, color 0.18s, box-shadow 0.18s',
+                boxShadow: isActive ? '0 4px 16px rgba(139,92,246,0.13)' : 'none',
+                outline: isActive ? '2px solid #fff' : 'none',
               }}
               tabIndex={0}
             >
-              <span style={{ fontSize: 22, display: 'flex', alignItems: 'center' }}>{link.icon}</span>
+              <span style={{ fontSize: 24, display: 'flex', alignItems: 'center' }}>{link.icon}</span>
               {link.label}
             </Link>
           );
@@ -65,15 +67,16 @@ export default function Sidebar() {
       <div style={{
         marginTop: 'auto',
         width: '100%',
-        padding: '18px 12px',
+        padding: '20px 14px',
         background: '#232336',
-        borderRadius: 12,
-        marginBottom: 8,
+        borderRadius: 14,
+        marginBottom: 10,
         color: '#c4b5fd',
-        fontWeight: 600,
-        fontSize: 16,
+        fontWeight: 700,
+        fontSize: 17,
         textAlign: 'center',
-        boxShadow: '0 2px 8px rgba(139,92,246,0.08)'
+        boxShadow: '0 2px 8px rgba(139,92,246,0.08)',
+        border: '1.5px solid #232336',
       }}>
         Palette Controls
         {/* Future: Add palette buttons, lock, randomize, etc. */}

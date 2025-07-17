@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import useStore from '../store';
+import { FaQuestionCircle } from 'react-icons/fa';
 
 function paletteToCSS(palette) {
   return `:root {\n  --primary: ${palette.primary};\n  --secondary: ${palette.secondary};\n  --accent: ${palette.accent};\n  --background: ${palette.background};\n  --text: ${palette.text};\n}`;
@@ -14,11 +15,20 @@ function paletteToJSON(palette) {
   return JSON.stringify(palette, null, 2);
 }
 
+function paletteToGradients(palette) {
+  return {
+    linear: `background: linear-gradient(90deg, ${palette.primary}, ${palette.secondary}, ${palette.accent});`,
+    radial: `background: radial-gradient(circle at 60% 40%, ${palette.primary}, ${palette.secondary}, ${palette.accent});`,
+    conic: `background: conic-gradient(from 0deg, ${palette.primary}, ${palette.secondary}, ${palette.accent}, ${palette.primary});`,
+  };
+}
+
 const formats = [
   { key: 'css', label: 'CSS Variables', fn: paletteToCSS },
   { key: 'scss', label: 'SCSS Variables', fn: paletteToSCSS },
   { key: 'tailwind', label: 'Tailwind Config', fn: paletteToTailwind },
   { key: 'json', label: 'HEX/JSON', fn: paletteToJSON },
+  { key: 'gradients', label: 'Gradients', fn: paletteToGradients },
 ];
 
 function encodePalette(palette) {
@@ -39,10 +49,16 @@ export default function ExportModal({ open, onClose }) {
   const code = formats.find(f => f.key === format).fn(palette);
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(code);
+    if (format === 'gradients') {
+      navigator.clipboard.writeText(Object.values(code).join('\n\n'));
+    } else {
+      navigator.clipboard.writeText(code);
+    }
   };
   const handleDownload = () => {
-    const blob = new Blob([code], { type: 'text/plain' });
+    const blob = new Blob([
+      format === 'gradients' ? Object.values(code).join('\n\n') : code
+    ], { type: 'text/plain' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
@@ -78,7 +94,10 @@ export default function ExportModal({ open, onClose }) {
       background: 'rgba(24,24,37,0.7)', display: 'flex', alignItems: 'center', justifyContent: 'center',
     }}>
       <div style={{ background: '#fff', color: '#181825', borderRadius: 16, padding: '2.5rem 2rem', minWidth: 380, boxShadow: '0 8px 32px rgba(0,0,0,0.18)' }}>
-        <h2 style={{ marginTop: 0, marginBottom: 18 }}>Export Palette</h2>
+        <h2 style={{ marginTop: 0, marginBottom: 18, display: 'flex', alignItems: 'center', gap: 8 }}>
+          Export Palette
+          <FaQuestionCircle title="Export your palette as CSS, SCSS, Tailwind, JSON, or gradients. Gradients use your primary, secondary, and accent colors." />
+        </h2>
         <div style={{ display: 'flex', gap: 10, marginBottom: 18 }}>
           {formats.map(f => (
             <button
@@ -95,17 +114,56 @@ export default function ExportModal({ open, onClose }) {
                 cursor: 'pointer',
                 outline: format === f.key ? '2px solid #8b5cf6' : 'none',
                 transition: 'background 0.15s',
+                display: 'flex', alignItems: 'center', gap: 6
               }}
+              title={f.key === 'gradients' ? 'Export CSS gradients using your palette colors.' : undefined}
             >
               {f.label}
+              {f.key === 'gradients' && <FaQuestionCircle title="Export three types of gradients: linear, radial, and conic." />}
             </button>
           ))}
         </div>
-        <textarea
-          value={code}
-          readOnly
-          style={{ width: '100%', minHeight: 120, fontFamily: 'monospace', fontSize: 15, borderRadius: 8, border: '1px solid #eee', marginBottom: 18, padding: 10, background: '#f8fafc', color: '#181825' }}
-        />
+        {format === 'gradients' ? (
+          <div style={{ marginBottom: 18 }}>
+            <div style={{ marginBottom: 10, color: '#6366f1', fontWeight: 700, fontSize: 16, display: 'flex', alignItems: 'center', gap: 6 }}>
+              Gradients
+              <FaQuestionCircle title="Copy or download CSS for linear, radial, and conic gradients using your palette." />
+            </div>
+            <div style={{ marginBottom: 10 }}>
+              <strong>Linear:</strong>
+              <textarea
+                value={code.linear}
+                readOnly
+                style={{ width: '100%', minHeight: 38, fontFamily: 'monospace', fontSize: 15, borderRadius: 8, border: '1px solid #eee', marginBottom: 8, padding: 8, background: '#f8fafc', color: '#181825' }}
+                title="Linear gradient CSS using your palette colors."
+              />
+            </div>
+            <div style={{ marginBottom: 10 }}>
+              <strong>Radial:</strong>
+              <textarea
+                value={code.radial}
+                readOnly
+                style={{ width: '100%', minHeight: 38, fontFamily: 'monospace', fontSize: 15, borderRadius: 8, border: '1px solid #eee', marginBottom: 8, padding: 8, background: '#f8fafc', color: '#181825' }}
+                title="Radial gradient CSS using your palette colors."
+              />
+            </div>
+            <div style={{ marginBottom: 10 }}>
+              <strong>Conic:</strong>
+              <textarea
+                value={code.conic}
+                readOnly
+                style={{ width: '100%', minHeight: 38, fontFamily: 'monospace', fontSize: 15, borderRadius: 8, border: '1px solid #eee', marginBottom: 8, padding: 8, background: '#f8fafc', color: '#181825' }}
+                title="Conic gradient CSS using your palette colors."
+              />
+            </div>
+          </div>
+        ) : (
+          <textarea
+            value={code}
+            readOnly
+            style={{ width: '100%', minHeight: 120, fontFamily: 'monospace', fontSize: 15, borderRadius: 8, border: '1px solid #eee', marginBottom: 18, padding: 10, background: '#f8fafc', color: '#181825' }}
+          />
+        )}
         <div style={{ display: 'flex', gap: 12, justifyContent: 'flex-end', marginBottom: 18 }}>
           <button onClick={onClose} style={{ background: '#eee', color: '#181825', border: 'none', borderRadius: 8, padding: '0.5rem 1.2rem', fontWeight: 600, fontSize: 16, cursor: 'pointer' }}>Cancel</button>
           <button onClick={handleCopy} style={{ background: '#6366f1', color: '#fff', border: 'none', borderRadius: 8, padding: '0.5rem 1.2rem', fontWeight: 600, fontSize: 16, cursor: 'pointer' }}>Copy</button>

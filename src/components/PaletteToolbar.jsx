@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FaMoon, FaSun, FaRandom, FaDownload, FaCopy, FaFont, FaPalette, FaImage, FaUndo, FaRedo, FaLock, FaLockOpen, FaEye } from 'react-icons/fa';
+import { FaMoon, FaSun, FaRandom, FaDownload, FaCopy, FaFont, FaPalette, FaImage, FaUndo, FaRedo, FaLock, FaLockOpen, FaEye, FaQuestionCircle } from 'react-icons/fa';
 import useStore from '../store';
 import FontSelectorModal from './FontSelectorModal';
 import MoodThemeModal from './MoodThemeModal';
@@ -237,6 +237,7 @@ export default function PaletteToolbar() {
           {/* Gradients Toggle */}
           <label style={{ display: 'flex', alignItems: 'center', gap: 6, fontWeight: 600, fontSize: 15, marginRight: 12 }}>
             <input type="checkbox" checked={gradients} onChange={e => setGradients(e.target.checked)} aria-label="Toggle gradients" tabIndex={0} /> Use Gradients
+            <FaQuestionCircle title="Toggle gradients for backgrounds and buttons." />
           </label>
           {/* Undo/Redo */}
           <button
@@ -275,6 +276,7 @@ export default function PaletteToolbar() {
               onBlur={e => e.target.style.boxShadow = 'none'}
             >
               <FaRandom />
+              <FaQuestionCircle title="Randomize palette. All pairs pass AAA contrast." />
             </button>
             <select
               value={harmonyType}
@@ -301,6 +303,7 @@ export default function PaletteToolbar() {
             onBlur={e => e.target.style.boxShadow = 'none'}
           >
             <FaCopy />
+            <FaQuestionCircle title="Copy palette as JSON." />
           </button>
           {/* Dark Mode Toggle */}
           <button
@@ -324,15 +327,24 @@ export default function PaletteToolbar() {
               title="More Options"
             >
               More ▾
+              <FaQuestionCircle title="Show more options." />
             </button>
             {moreOpen && (
               <div style={{
                 position: 'absolute', top: '110%', right: 0, background: '#232336', color: '#fff', borderRadius: 10, boxShadow: '0 4px 24px rgba(0,0,0,0.18)', minWidth: 220, padding: '1rem 0', zIndex: 1000, display: 'flex', flexDirection: 'column', gap: 0
               }}>
-                <button onClick={() => setImageModalOpen(true)} style={{ background: 'none', border: 'none', color: '#fff', fontWeight: 600, fontSize: 16, padding: '0.7rem 1.5rem', textAlign: 'left', cursor: 'pointer', width: '100%' }}>Extract from Image</button>
-                <button onClick={() => setAnalyzerOpen(true)} style={{ background: 'none', border: 'none', color: '#fff', fontWeight: 600, fontSize: 16, padding: '0.7rem 1.5rem', textAlign: 'left', cursor: 'pointer', width: '100%' }}>Palette Analyzer</button>
-                <button onClick={() => setExportModalOpen(true)} style={{ background: 'none', border: 'none', color: '#fff', fontWeight: 600, fontSize: 16, padding: '0.7rem 1.5rem', textAlign: 'left', cursor: 'pointer', width: '100%' }}>Export Palette</button>
-                <button onClick={() => setFontModalOpen(true)} style={{ background: 'none', border: 'none', color: '#fff', fontWeight: 600, fontSize: 16, padding: '0.7rem 1.5rem', textAlign: 'left', cursor: 'pointer', width: '100%' }}>Font & Layout</button>
+                <button onClick={() => setImageModalOpen(true)} style={{ background: 'none', border: 'none', color: '#fff', fontWeight: 600, fontSize: 16, padding: '0.7rem 1.5rem', textAlign: 'left', cursor: 'pointer', width: '100%' }}>Extract from Image
+                  <FaQuestionCircle title="Extract palette from image." />
+                </button>
+                <button onClick={() => setAnalyzerOpen(true)} style={{ background: 'none', border: 'none', color: '#fff', fontWeight: 600, fontSize: 16, padding: '0.7rem 1.5rem', textAlign: 'left', cursor: 'pointer', width: '100%' }}>Palette Analyzer
+                  <FaQuestionCircle title="Analyze palette for contrast, harmony, and branding." />
+                </button>
+                <button onClick={() => setExportModalOpen(true)} style={{ background: 'none', border: 'none', color: '#fff', fontWeight: 600, fontSize: 16, padding: '0.7rem 1.5rem', textAlign: 'left', cursor: 'pointer', width: '100%' }}>Export Palette
+                  <FaQuestionCircle title="Export palette in various formats." />
+                </button>
+                <button onClick={() => setFontModalOpen(true)} style={{ background: 'none', border: 'none', color: '#fff', fontWeight: 600, fontSize: 16, padding: '0.7rem 1.5rem', textAlign: 'left', cursor: 'pointer', width: '100%' }}>Font & Layout
+                  <FaQuestionCircle title="Change font and layout." />
+                </button>
                 <div style={{ padding: '0.7rem 1.5rem', color: '#c4b5fd', fontWeight: 600, fontSize: 15 }}>Color Blindness</div>
                 <div style={{ padding: '0 1.5rem 1rem 1.5rem' }}>
                   <select
@@ -353,11 +365,21 @@ export default function PaletteToolbar() {
                     aria-label="Color blindness simulation mode"
                     tabIndex={0}
                   >
-                    <option value="">Normal Vision</option>
-                    <option value="protanopia">Protanopia</option>
-                    <option value="deuteranopia">Deuteranopia</option>
-                    <option value="tritanopia">Tritanopia</option>
-                    <option value="achromatopsia">Achromatopsia</option>
+                    <option value="">Normal Vision
+                      <FaQuestionCircle title="Normal vision (20/20) - no color blindness." />
+                    </option>
+                    <option value="protanopia">Protanopia
+                      <FaQuestionCircle title="Protanopia (red-blind) - sees red as dark, green as bright." />
+                    </option>
+                    <option value="deuteranopia">Deuteranopia
+                      <FaQuestionCircle title="Deuteranopia (green-blind) - sees green as dark, red as bright." />
+                    </option>
+                    <option value="tritanopia">Tritanopia
+                      <FaQuestionCircle title="Tritanopia (blue-blind) - sees blue as dark, green as bright." />
+                    </option>
+                    <option value="achromatopsia">Achromatopsia
+                      <FaQuestionCircle title="Achromatopsia (color blindness) - sees all colors as shades of gray." />
+                    </option>
                   </select>
                 </div>
               </div>

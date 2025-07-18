@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import useStore from '../store';
 import { FaQuestionCircle } from 'react-icons/fa';
+import Swal from 'sweetalert2';
 
 function paletteToCSS(palette) {
   return `:root {\n  --primary: ${palette.primary};\n  --secondary: ${palette.secondary};\n  --accent: ${palette.accent};\n  --background: ${palette.background};\n  --text: ${palette.text};\n}`;
@@ -54,6 +55,13 @@ export default function ExportModal({ open, onClose }) {
     } else {
       navigator.clipboard.writeText(code);
     }
+    Swal.fire({
+      icon: 'success',
+      title: 'Copied!',
+      text: 'Palette code copied to clipboard.',
+      timer: 1200,
+      showConfirmButton: false
+    });
   };
   const handleDownload = () => {
     const blob = new Blob([
@@ -65,10 +73,24 @@ export default function ExportModal({ open, onClose }) {
     a.download = `palette.${format === 'json' ? 'json' : format}`;
     a.click();
     URL.revokeObjectURL(url);
+    Swal.fire({
+      icon: 'success',
+      title: 'Downloaded!',
+      text: 'Palette file downloaded.',
+      timer: 1200,
+      showConfirmButton: false
+    });
   };
   const handleShare = () => {
     const url = `${window.location.origin}${window.location.pathname}?palette=${encodePalette(palette)}`;
     navigator.clipboard.writeText(url);
+    Swal.fire({
+      icon: 'success',
+      title: 'Share Link Copied!',
+      text: 'Palette share link copied to clipboard.',
+      timer: 1200,
+      showConfirmButton: false
+    });
   };
   const handleImport = () => {
     let imported = null;
@@ -81,10 +103,80 @@ export default function ExportModal({ open, onClose }) {
     if (imported && imported.primary && imported.secondary && imported.accent && imported.background && imported.text) {
       setPalette(imported);
       setImportValue('');
-      alert('Palette imported!');
+      Swal.fire({
+        icon: 'success',
+        title: 'Palette Imported!',
+        text: 'Palette imported successfully.',
+        timer: 1200,
+        showConfirmButton: false
+      });
     } else {
-      alert('Invalid palette data.');
+      Swal.fire({
+        icon: 'error',
+        title: 'Invalid Data',
+        text: 'Invalid palette data.',
+        timer: 1600,
+        showConfirmButton: false
+      });
     }
+  };
+  // --- Advanced Export ---
+  const handleFigmaExport = () => {
+    const figmaJSON = JSON.stringify({
+      name: 'Paletto Palette',
+      colors: palette
+    }, null, 2);
+    navigator.clipboard.writeText(figmaJSON);
+    Swal.fire({
+      icon: 'success',
+      title: 'Figma Exported!',
+      text: 'Palette JSON copied for Figma import.',
+      timer: 1400,
+      showConfirmButton: false
+    });
+  };
+  const handleAdobeXDExport = () => {
+    const xdJSON = JSON.stringify({
+      palette: palette
+    }, null, 2);
+    navigator.clipboard.writeText(xdJSON);
+    Swal.fire({
+      icon: 'success',
+      title: 'Adobe XD Exported!',
+      text: 'Palette JSON copied for Adobe XD.',
+      timer: 1400,
+      showConfirmButton: false
+    });
+  };
+  const handleSketchExport = () => {
+    const sketchJSON = JSON.stringify({
+      palette: palette
+    }, null, 2);
+    navigator.clipboard.writeText(sketchJSON);
+    Swal.fire({
+      icon: 'success',
+      title: 'Sketch Exported!',
+      text: 'Palette JSON copied for Sketch.',
+      timer: 1400,
+      showConfirmButton: false
+    });
+  };
+  const handleBrandKitExport = () => {
+    const brandKit = `Brand Kit\n==========\n\nPalette:\n${paletteToJSON(palette)}\n\nTypography Suggestion: Inter, 700/400\nLogo: [Insert your logo here]\nUI Preview: [Use these colors in your UI!]`;
+    const blob = new Blob([brandKit], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'brand-kit.txt';
+    a.click();
+    URL.revokeObjectURL(url);
+    Swal.fire({
+      icon: 'success',
+      title: 'Brand Kit Downloaded!',
+      text: 'Simple brand kit file downloaded.',
+      timer: 1400,
+      showConfirmButton: false
+    });
   };
 
   if (!open) return null;
@@ -169,6 +261,13 @@ export default function ExportModal({ open, onClose }) {
           <button onClick={handleCopy} style={{ background: '#6366f1', color: '#fff', border: 'none', borderRadius: 8, padding: '0.5rem 1.2rem', fontWeight: 600, fontSize: 16, cursor: 'pointer' }}>Copy</button>
           <button onClick={handleDownload} style={{ background: '#8b5cf6', color: '#fff', border: 'none', borderRadius: 8, padding: '0.5rem 1.2rem', fontWeight: 600, fontSize: 16, cursor: 'pointer' }}>Download</button>
           <button onClick={handleShare} style={{ background: '#10b981', color: '#fff', border: 'none', borderRadius: 8, padding: '0.5rem 1.2rem', fontWeight: 600, fontSize: 16, cursor: 'pointer' }}>Share</button>
+        </div>
+        {/* Advanced Export Buttons */}
+        <div style={{ display: 'flex', gap: 10, marginBottom: 18, flexWrap: 'wrap' }}>
+          <button onClick={handleFigmaExport} style={{ background: '#0acf83', color: '#fff', border: 'none', borderRadius: 8, padding: '0.4rem 1.2rem', fontWeight: 600, fontSize: 15, cursor: 'pointer' }}>Export to Figma</button>
+          <button onClick={handleAdobeXDExport} style={{ background: '#ff61f6', color: '#fff', border: 'none', borderRadius: 8, padding: '0.4rem 1.2rem', fontWeight: 600, fontSize: 15, cursor: 'pointer' }}>Export to Adobe XD</button>
+          <button onClick={handleSketchExport} style={{ background: '#f7b500', color: '#fff', border: 'none', borderRadius: 8, padding: '0.4rem 1.2rem', fontWeight: 600, fontSize: 15, cursor: 'pointer' }}>Export to Sketch</button>
+          <button onClick={handleBrandKitExport} style={{ background: '#6366f1', color: '#fff', border: 'none', borderRadius: 8, padding: '0.4rem 1.2rem', fontWeight: 600, fontSize: 15, cursor: 'pointer' }}>Brand Kit Export</button>
         </div>
         <div style={{ marginTop: 18 }}>
           <h4>Import Palette</h4>
